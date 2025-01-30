@@ -1,7 +1,8 @@
 import express from 'express';
-import {CreateTask} from '../controller/task.controller.js';
-const route = express.Router();
+import {CreateTaskPage,CreateTask} from '../controller/task.controller.js';
+const router = express.Router();
 
-route.get('/addtask',CreateTask);
+router.get('/create-task',CreateTaskPage);
+router.post('/create-task',CreateTask)
 
-export default route;   
+export default router;   

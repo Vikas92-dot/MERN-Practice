@@ -1,28 +1,28 @@
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-    </head>
-    <body>
-            <div class="container d-flex justify-content-center align-items-center" style="height:100vh">
-                <div class="" style="width:30%; height: auto; box-shadow: 10px 10px 10px 10px grey;">
-                    <h5 class="bg-secondary p-2 text-center text-white">Sign In</h5>
-                    <form class="p-2" method="post" action="/admin/sign-in">
-                        <div class="form-group">
-                            <input class="form-control" name="email" type="text" placeholder="Enter email id"/>
-                        </div>
-                        <div class="form-group">
-                            <input name="password" type="password" placeholder="Enter password" class="form-control"/>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-danger">Submit</button>
-                        </div>
-                    </form>
-                </div>
+  <head>
+    <%- include("__bootstrap.ejs") %>
+  </head>
+  <body>
+    <section class="vh-100" style="background-color: #1c2331;">
+      <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="card p-4 shadow-lg rounded-3" style="width: 30%; background-color: #f5f7fa;">
+          <h3 class="text-center text-dark fw-bold mb-4">Task Management</h3>
+          <form method="post" action="/admin/sign-in">
+            <div class="form-group mb-3">
+              <label for="email" class="form-label text-dark">Email</label>
+              <input class="form-control" name="email" type="email" id="email" placeholder="Enter email id" required />
             </div>
-    </body>
+            <div class="form-group mb-4">
+              <label for="password" class="form-label text-dark">Password</label>
+              <input name="password" type="password" id="password" placeholder="Enter password" class="form-control" required />
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary btn-block mb-3">Sign In</button>
+            </div>
+            
+          </form>
+        </div>
+      </div>
+    </section>
+  </body>
 </html>
