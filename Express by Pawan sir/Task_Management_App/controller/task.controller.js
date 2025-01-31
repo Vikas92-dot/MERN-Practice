@@ -1,6 +1,7 @@
 import Task from "../model/task.module.js";
 import TaskPriority from "../model/task_priority.model.js"
 
+
 export const CreateTask = async (request,response,next)=>{
     try{
         let {title,description,priorityId} = request.body;
@@ -15,6 +16,26 @@ export const CreateTask = async (request,response,next)=>{
         
         return response.render("error.ejs");
     }
+}
+export const FetchTaskById = (request,response,next)=>{
+    let priorityId = request.params.priorityId;
+    Task.findByPriority(priorityId)
+        .then(result=>{
+            console.log(result);
+            return response.render("all-task.ejs",{taskList: result});
+        }).catch(err=>{
+            console.log(err);
+            return response.render("error.ejs");
+        })
+}
+export const FetchTask =  (request,response)=>{
+    Task.findAll()
+        .then(result=>{
+            console.log(result);
+            return response.render("all-task.ejs",{taskList: result});
+        }).catch(err=>{
+            return response.render("error.ejs");
+        })
 }
 export const CreateTaskPage = async (request,response,next)=>{
     try{

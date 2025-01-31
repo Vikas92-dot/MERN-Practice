@@ -23,4 +23,48 @@ export default class Task{
             })
         })
     }
+    static findAll(){
+        return new Promise((resolve,reject)=>{
+            pool.getConnection((err,con)=>{
+                if(!err){
+                    let sql = "SELECT task.id,task.title,task.description,task.date,task.status,task.priorityId,task_priority.priority FROM task INNER JOIN task_priority ON task.priorityId = task_priority.id";
+                    con.query(sql,(err,result)=>{
+                        con.release();
+                        err ? reject(err) : resolve(result);
+                    })
+                }
+                else reject(err);
+            })
+        })
+    }
+    static findByPriority(id){
+        return new Promise((resolve,reject)=>{
+            pool.getConnection((err,con)=>{
+                if(!err){
+                    let sql = "SELECT task.id,task.title,task.description,task.date,task.status,task.priorityId,task_priority.priority FROM task inner join task_priority ON task.priorityId = task_priority.id WHERE task.priorityId = ?"
+                    con.query(sql,[id*1],(err,result)=>{
+                        con.release();
+                        err ? reject(err) : resolve(result);
+                    })
+                }
+                else reject(err);
+            })
+        })
+    }
+    static pendingTask(){
+        return new Promise((resolve,reject)=>{
+            pool.getConnection((err,con)=>{
+                if(!err){
+                    let sql = "select * from task where status = 'Active'";
+                    con.query(sql,(err,result)=>{
+                            con.release();
+                            err ? reject(err) : resolve(result);
+                    })
+                }
+                else{
+                    reject(err);
+                }
+            })
+        })
+    }
 }
