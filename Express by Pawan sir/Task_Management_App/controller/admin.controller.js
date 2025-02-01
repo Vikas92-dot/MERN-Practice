@@ -6,11 +6,19 @@ export const dashboard = (request,response,next)=>{
 export const signInPage = (request,response,next)=>{
     return response.render("signin.ejs");
 }
-export const signIn = (request,response,next)=>{
+export const signInAction = (request,response,next)=>{
     let {email,password} = request.body;
     let admin = new Admin(null,email,password);
         admin.authenticate().then(result=>{
-            return result.length ? response.redirect('/task/all-task') : response.redirect("/admin/sign-in"); 
+            if(result.length != 0){
+                request.session.currentUserId = result[0].id;
+                request.session.currentUserEmail = result[0].email;
+                request.session.isLoggedIn = true;
+                return response.redirect("/admin/dashboard");
+            }
+            else
+                return response.redirect("/admin/sign-in");
+            
         }).catch(err=>{ 
             return response.render('error.ejs');
         })
