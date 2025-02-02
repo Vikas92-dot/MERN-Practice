@@ -9,6 +9,19 @@ export default class Task{
         this.date = date;
         this.priorityId = priorityId;
     }
+    static delete(id){
+        return new Promise((resolve,reject)=>{
+            pool.getConnection((err,con)=>{
+                if(!err){
+                    let sql = "DELETE from task where id = ?";
+                    con.query(sql,[id],(err,result)=>{
+                        err ? reject(err) : resolve(true);
+                    })
+                }
+                else reject(err);
+            })
+        })
+    }
     static editTask(task){
         return new Promise((resolve,reject)=>{
             pool.getConnection((err,con)=>{

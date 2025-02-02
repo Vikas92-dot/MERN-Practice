@@ -1,28 +1,67 @@
-   <nav class="navbar navbar-expand-lg bg-secondary navbar-dark p-3 shadow-lg">
+   <nav class="navbar navbar-expand-lg navbar-dark bg-gradient p-3 shadow-lg sticky-top">
     <div class="container-fluid">
-      <a class="navbar-brand fw-bold fs-3 text-light" href="/admin/dashboard">Task Manager</a>
+      <a class="navbar-brand fw-bold fs-3 text-light" href="/admin/dashboard">
+        <i class="bi bi-kanban-fill me-2"></i>Task Manager
+      </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link active text-light" href="/task/all-task">Home</a>
+            <a class="nav-link text-light fw-semibold px-3 rounded hover-bg-light-primary" href="/task/all-task">
+              <i class="bi bi-house-door-fill me-2"></i>Home
+            </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-light" href="/task/create-task">Create Task</a>
+            <a class="nav-link text-light fw-semibold px-3 rounded hover-bg-light-success" href="/task/create-task">
+              <i class="bi bi-plus-circle-dotted me-2"></i>Create Task
+            </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-light" href="#">Completed Task</a>
+            <a class="nav-link text-light fw-semibold px-3 rounded hover-bg-light-info" href="#">
+              <i class="bi bi-check-circle me-2"></i>Completed Task
+            </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-light" href="/task/pending-task">Pending Task</a>
+            <a class="nav-link text-light fw-semibold px-3 rounded hover-bg-light-warning" href="/task/pending-task">
+              <i class="bi bi-hourglass me-2"></i>Pending Task
+            </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-light" href="#">New Task</a>
+            <a class="nav-link text-light fw-semibold px-3 rounded hover-bg-light-secondary" href="#">
+              <i class="bi bi-star me-2"></i>New Task
+            </a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
+  
+  <style>
+    /* Gradient Navbar Background */
+    .bg-gradient {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    }
+  
+    /* Navigation Item Hover Effects */
+    .hover-bg-light-primary:hover { background-color: #007bff !important; }
+    .hover-bg-light-success:hover { background-color: #28a745 !important; }
+    .hover-bg-light-info:hover { background-color: #17a2b8 !important; }
+    .hover-bg-light-warning:hover { background-color: #ffc107 !important; }
+    .hover-bg-light-secondary:hover { background-color: #6c757d !important; }
+  
+    /* Transition effects for smoother animations */
+    .nav-link {
+      transition: all 0.3s ease;
+    }
+  
+    /* Navbar shadow enhancement */
+    nav {
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    }
+  </style>
+  
+  <!-- Bootstrap Icons Dependency -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   

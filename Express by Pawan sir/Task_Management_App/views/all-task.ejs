@@ -19,6 +19,14 @@
                 <a href="/task/load-task/3" class="btn btn-outline-success">Low</a>
             </div>
             <div class="container mt-3">
+                <!-- Edit Success Message -->
+        <% if (typeof editMessage !== 'undefined') { %>
+        <div class="alert alert-success"><%= editMessage %></div>
+        <% } %>
+                    <!--Delete Success message -->
+        <% if (typeof deleteMessage !== 'undefined') { %>
+            <div class="alert alert-success"><%= deleteMessage %></div>
+            <% } %>
                 <div class="row">
                     <script></script>
                     <% taskList.map((task,index)=>{ %>
@@ -32,7 +40,7 @@
                                     <a href="/task/edit-task/<%= task.id %>">
                                         <button class="btn btn-primary" style="width:100px;">Edit</button>
                                     </a> 
-                                    <a onclick="return confirm('Do you want to delete ?')" href=""> 
+                                    <a onclick="return confirm('Do you want to delete ?')" href="/task/delete-task/<%= task.id  %>"> 
                                      <button class="btn btn-danger" style="width:100px;">Delete</button>
                                    </a>  
                                  </div>

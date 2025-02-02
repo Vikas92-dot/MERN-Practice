@@ -1,6 +1,21 @@
+import { response } from "express";
 import Task from "../model/task.module.js";
 import TaskPriority from "../model/task_priority.model.js"
 
+export const DeleteTask = async (request,response,next)=>{
+    try{
+        let taskId = request.params.id;
+        let isDelete = Task.delete(taskId);
+        
+        if(isDelete){
+            return response.redirect('/task/all-task?delete=Task deleted successfully!');
+        }
+    }
+    catch(err){
+        console.log(err);
+        response.render("error.ejs");
+    }
+}
 
 export const EditTaskAction = async (request,response,next)=>{
     try{
@@ -12,7 +27,7 @@ export const EditTaskAction = async (request,response,next)=>{
         console.log("body ",id);
         
         if (isEdited) {
-            return response.redirect("/task/all-task?success=Task edited successfully!");
+            return response.redirect("/task/all-task?edit=Task edited successfully!");
         }
 
     }
@@ -61,10 +76,13 @@ export const FetchTaskById = (request,response,next)=>{
         })
 }
 export const FetchTask =  (request,response)=>{
+    const deleteMessage = request.query.delete;
+    const editMessage = request.query.edit;
+
     Task.findAll()
         .then(result=>{
             console.log(result);
-            return response.render("all-task.ejs",{taskList: result});
+            return response.render("all-task.ejs",{taskList: result, deleteMessage, editMessage});
         }).catch(err=>{
             return response.render("error.ejs");
         })
