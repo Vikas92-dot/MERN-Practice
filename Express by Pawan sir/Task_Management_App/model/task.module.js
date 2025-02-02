@@ -9,6 +9,20 @@ export default class Task{
         this.date = date;
         this.priorityId = priorityId;
     }
+    static editTask(task){
+        return new Promise((resolve,reject)=>{
+            pool.getConnection((err,con)=>{
+                if(!err){
+                     let sql = "UPDATE task SET title = ?,description = ?,date = ?,priorityId = ? WHERE id = ?";
+                     con.query(sql,[task.title,task.description,task.date,task.priorityId*1,task.id],(err,result)=>{
+                        con.release();
+                        err ? reject(err) : resolve(true);
+                     })
+                }
+                else reject(err);
+            })
+        })
+    }
     static create(task){
         return new Promise((resolve,reject)=>{
             pool.getConnection((err,con)=>{
@@ -43,6 +57,22 @@ export default class Task{
                 if(!err){
                     let sql = "SELECT task.id,task.title,task.description,task.date,task.status,task.priorityId,task_priority.priority FROM task inner join task_priority ON task.priorityId = task_priority.id WHERE task.priorityId = ?"
                     con.query(sql,[id*1],(err,result)=>{
+                        con.release();
+                        err ? reject(err) : resolve(result);
+                    })
+                }
+                else reject(err);
+            })
+        })
+    }
+    static getById(id){
+        return new Promise((resolve,reject)=>{
+            pool.getConnection((err,con)=>{
+                if(!err){
+                    let sql = "select * from task where id = ?";
+                    
+                    con.query(sql,[id],(err,result)=>{
+                        console.log("Model",sql,result);
                         con.release();
                         err ? reject(err) : resolve(result);
                     })

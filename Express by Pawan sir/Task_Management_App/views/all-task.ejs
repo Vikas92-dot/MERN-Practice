@@ -27,10 +27,15 @@
                                 <p class="text-center" style="font-weight: bolder;"><%= task.title %></p>
                                 <label class="text-center"><%= task.description %></label>
                                 <label>Create at: <%= task.date %></label>
+                                
                                 <div class="bg-light p-2 d-flex flex-row justify-content-around" style="width: 100%;">
-                                    <button class="btn btn-primary" style="width: 40%;">Edit</button>
-                                    <button class="btn btn-danger" style="width: 40%;">Delete</button>
-                                </div>
+                                    <a href="/task/edit-task/<%= task.id %>">
+                                        <button class="btn btn-primary" style="width:100px;">Edit</button>
+                                    </a> 
+                                    <a onclick="return confirm('Do you want to delete ?')" href=""> 
+                                     <button class="btn btn-danger" style="width:100px;">Delete</button>
+                                   </a>  
+                                 </div>
                             </div>
                         </div>
                     <%})%>

@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <%- include("__bootstrap.ejs") %>
+    </head>
+    <body>
+        <%- include("__header.ejs") %>
+        <div class="container mt-4">
+                <!-- Success message -->
+        <% if (typeof successMessage !== 'undefined') { %>
+            <div class="alert alert-success"><%= successMessage %></div>
+            <% } %>
+            <form action="/task/edit-task" method="post">
+                <!-- Hidden input for task ID -->
+                 
+                <input type="hidden" name="id" value="<%=taskDetails.id%>"/>
+                 <!-- Title input -->
+                <div class="form-group">
+                    <input value="<%=taskDetails.title%>" name="title" type="text" placeholder="Enter task title" class="form-control"/>
+                </div>
+                <!-- Description input -->
+                <div class="form-group">
+                    <textarea name="description" placeholder="Enter task description" class="form-control"><%= taskDetails.description %></textarea>
+
+                </div>
+                <!-- Priority dropdown -->
+                <div class="form-group">
+                    <select class="form-control" name="priorityId" required>
+                        <option>Select task priority</option>
+                        <%for(let taskPriority of taskPriorities){ %>
+                            <option value="<%=taskPriority.id%>"><%=taskPriority.priority%></option>
+                            <%}%>
+                    </select>
+                </div>
+                <div class="form-group">
+                  <button class="btn btn-success">UPDATE</button>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
