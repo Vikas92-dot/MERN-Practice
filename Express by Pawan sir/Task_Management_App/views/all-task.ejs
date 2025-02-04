@@ -29,23 +29,32 @@
             <% } %>
                 <div class="row">
                     <script></script>
-                    <% taskList.map((task,index)=>{ %>
+                    <% taskList.map((task)=>{ %>
                         <div class="col-md-4 p-2">
-                            <div class="text-white p-3 d-flex flex-column justify-content-between align-items-center <%=task.priority == 'High' ? 'bg-danger' : task.priority == 'Medium' ? 'bg-warning' : 'bg-success'%> style= "box-shadow: 10px 10px 10px grey; min-height: 300px; font-weight: bold;" %>">
-                                <p class="text-center" style="font-weight: bolder;"><%= task.title %></p>
-                                <label class="text-center"><%= task.description %></label>
-                                <label>Create at: <%= task.date %></label>
-                                
-                                <div class="bg-light p-2 d-flex flex-row justify-content-around" style="width: 100%;">
-                                    <a href="/task/edit-task/<%= task.id %>">
-                                        <button class="btn btn-primary" style="width:100px;">Edit</button>
-                                    </a> 
-                                    <a onclick="return confirm('Do you want to delete ?')" href="/task/delete-task/<%= task.id  %>"> 
-                                     <button class="btn btn-danger" style="width:100px;">Delete</button>
-                                   </a>  
-                                 </div>
+                            <div
+                              class="p-4 d-flex flex-column justify-content-between"
+                              style="border: 2px solid #e0e0e0; border-radius: 15px; background-color: white; box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.1);"
+                            >
+                              <div class="d-flex justify-content-between">
+                                <span class="badge bg-info text-white">Created: <%= task.date %></span>
+                                <span class="badge bg-<%= task.priority == 'High' ? 'danger' : task.priority == 'Medium' ? 'warning' : 'success' %>">
+                                  <%= task.priority %> Priority
+                                </span>
+                              </div>
+                              <h4 class="text-dark fw-bold mt-3"><%= task.title %></h4>
+                              <p class="text-muted"><%= task.description %></p>
+                          
+                              <div class="d-flex justify-content-between">
+                                <a href="/task/edit-task/<%= task.id %>">
+                                  <button class="btn btn-outline-primary">Edit</button>
+                                </a>
+                                <a onclick="return confirm('Do you want to delete?')" href="/task/delete-task/<%= task.id %>">
+                                  <button class="btn btn-outline-danger">Delete</button>
+                                </a>
+                              </div>
                             </div>
-                        </div>
+                          </div>
+                          
                     <%})%>
                 </div>
             </div>
