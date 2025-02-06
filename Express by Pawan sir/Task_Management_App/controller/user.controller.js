@@ -1,8 +1,32 @@
 import Role from "../model/role.model.js";
+import Task from "../model/task.module.js";
 import User from "../model/user.model.js";
 
-export const userTasks = (request,response,next)=>{
 
+
+export const completeTask = async (request,response,next)=>{
+    let taskId = request.params.taskId;
+    let isComplete = await Task.remove(taskId);
+    if(isComplete){
+        console.log("Successfully remove..Task");
+        return response.redirect('/user/dashboard');
+    }
+    else{
+        response.render('error.ejs');
+    }
+
+}
+
+export const userTasks = async (request,response,next)=>{
+    let userId = request.params.userId;
+    console.log(userId);
+    await Task.getUserTasks(userId).then(result=>{
+        let tasks = result;
+        return response.render('user-task.ejs',{tasks});
+    })
+    
+    
+    
 }
 
 export const signOut = (request,response,next)=>{
@@ -11,13 +35,21 @@ export const signOut = (request,response,next)=>{
     request.session.destroy();
     return response.redirect("/user/sign-in");
 }
+
 export const signInPage = (request,response,next)=>{
     return response.render('user-sign-in.ejs');
 } 
 
+export const userDashboard = (request,response,next)=>{
+    let userId = request.query.userId;
+    
+    return response.render('user-dashboard.ejs',{userId});
+}
+
 export const signInUser = (request,response,next)=>{
     let {email,password} = request.body;
-    let user = new User(null,email,password);
+    let user = new User(null, null, email, password, null);
+
         user.authenticateUser().then(result=>{
             console.log(result);
             
@@ -48,9 +80,7 @@ export const assignTask = async (request,response,next)=>{
         console.log("Not assigned");
         response.render('error.ejs');}
 }
-export const userDashboard = (request,response,next)=>{
-    return response.render('user-dashboard.ejs')
-}
+
 export const signUpAction = async (request,response)=>{
     try{
         let {name,email,password,role} = request.body;

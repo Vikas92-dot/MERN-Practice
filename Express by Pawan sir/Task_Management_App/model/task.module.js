@@ -11,6 +11,23 @@ export default class Task{
         this.priorityId = priorityId;
     }
 
+    static getUserTasks(userId){
+        return new Promise((resolve,reject)=>{
+            pool.getConnection((err,con)=>{
+                if(!err){
+                    let sql = "SELECT task.id AS task_id, task.title, task.description,task.status, task.date, task.priorityId, user.name AS assigned_user FROM task LEFT JOIN user ON task.userId = user.id WHERE user.id = ?;"
+                    con.query(sql,[userId],(err,result)=>{
+                        con.release();
+                        console.log(result);
+                        err ? reject(err) : resolve(result);
+                        
+                    })
+                }
+                else reject(err);
+            })
+        })
+    }
+
      //For adding the user_id and role_Id
      static assign(task){
         return new Promise((resolve , reject)=>{
@@ -19,6 +36,8 @@ export default class Task{
                     let sql = "UPDATE task SET userId = ? where id = ?";
                     con.query(sql , [task.userId , insertedTaskId] , (err , result)=>{
                         con.release();
+                        console.log(insertedTaskId);
+                        
                         err ? reject(err) : resolve(result);
                     })
                 }else {
@@ -63,7 +82,7 @@ export default class Task{
                      con.query(sql,[task.title,task.description,task.date,task.priorityId*1,task.userId*1],(err,result)=>{
                         con.release();
                         console.log(result);
-                        // insertedTaskId = result.insertId;
+                        insertedTaskId = result.insertId;
                         
                         err ? reject(err) : resolve(result);
                      })

@@ -5,10 +5,14 @@ import Role from "../model/role.model.js";
 
 export const assignTask = async (request,response,next)=>{
     let {userId} = request.body;
-    await Task.assign({userId});
-    console.log("Successfully assigned..Task",);
-    
-    return response.redirect('/task/create-task')
+    let isAssigned = await Task.assign({userId});
+    if(isAssigned){
+        console.log("Successfully assigned..Task");
+        return response.redirect('/task/create-task');
+    }
+    else{
+        response.render('error.ejs');
+    }
 
 }
 
