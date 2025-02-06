@@ -16,6 +16,8 @@ export default class User{
                     let sql = "select * from user where email = ? and password = ?";
                     con.query(sql,[this.email,this.password],(err,result)=>{
                         con.release();
+                        console.log(result);
+                        
                         err ? reject(err) : resolve(result);
                     })
                 }

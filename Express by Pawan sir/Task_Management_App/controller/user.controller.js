@@ -1,16 +1,29 @@
 import Role from "../model/role.model.js";
 import User from "../model/user.model.js";
 
+export const userTasks = (request,response,next)=>{
+
+}
+
+export const signOut = (request,response,next)=>{
+    request.session.isLoggedIn = false;
+    request.session.currentUser = null;
+    request.session.destroy();
+    return response.redirect("/user/sign-in");
+}
+export const signInPage = (request,response,next)=>{
+    return response.render('user-sign-in.ejs');
+} 
 
 export const signInUser = (request,response,next)=>{
     let {email,password} = request.body;
     let user = new User(null,email,password);
         user.authenticateUser().then(result=>{
+            console.log(result);
+            
             if(result.length != 0){
-                request.session.currentUserId = result[0].id;
-                request.session.currentUserEmail = result[0].email;
-                request.session.isLoggedIn = true;
-                return response.redirect("/user/user-dashboard");
+                
+                return response.redirect(`/user/dashboard?userId=${result[0].id}`);
             }
             else
                 return response.redirect("/user/sign-in");
