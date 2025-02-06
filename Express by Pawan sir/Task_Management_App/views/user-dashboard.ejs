@@ -1,0 +1,120 @@
+<html>
+    <head>
+        <%- include('__bootstrap.ejs')  %>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-gradient p-3 shadow-lg sticky-top">
+            <div class="container-fluid">
+              <a class="navbar-brand fw-bold fs-3 text-light" href="/admin/dashboard">
+                <i class="bi bi-kanban-fill me-2"></i>Task Manager
+              </a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                  <li class="nav-item">
+                    <a class="nav-link text-light fw-semibold px-3 rounded hover-bg-light-primary" href="/task/all-task">
+                      <i class="bi bi-house-door-fill me-2"></i>Home
+                    </a>
+                  </li>
+                  
+                  <li class="nav-item">
+                    <a class="nav-link text-light fw-semibold px-3 rounded hover-bg-light-info" href="#">
+                      <i class="bi bi-check-circle me-2"></i>Completed Task
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link text-light fw-semibold px-3 rounded hover-bg-light-warning" href="/task/pending-task">
+                      <i class="bi bi-hourglass me-2"></i>Pending Task
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                            
+                    
+                      <a class="nav-link text-light fw-semibold px-3 rounded hover-bg-light-secondary" href="/admin/signout">
+                        <i class="bi bi-box-arrow-left"></i> Sign Out
+                      </a>
+                     
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+          
+          <style>
+            /* Gradient Navbar Background */
+            .bg-gradient {
+              background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            }
+          
+            /* Navigation Item Hover Effects */
+            .hover-bg-light-primary:hover { background-color: #007bff !important; }
+            .hover-bg-light-success:hover { background-color: #28a745 !important; }
+            .hover-bg-light-info:hover { background-color: #17a2b8 !important; }
+            .hover-bg-light-warning:hover { background-color: #ffc107 !important; }
+            .hover-bg-light-secondary:hover { background-color: #6c757d !important; }
+          
+            /* Transition effects for smoother animations */
+            .nav-link {
+              transition: all 0.3s ease;
+            }
+          
+            /* Navbar shadow enhancement */
+            nav {
+              box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            }
+          </style>
+          
+          <!-- Bootstrap Icons Dependency -->
+          <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+        
+    </head>
+    <body>
+      <div class="container mt-3">
+        <a href="/task/all-task" class="btn btn-outline-secondary">All</a>
+        <a href="/task/load-task/1" class="btn btn-outline-danger" style="width:100px">High</a>
+        <a href="/task/load-task/2" class="btn btn-outline-warning">Medium</a>
+        <a href="/task/load-task/3" class="btn btn-outline-success">Low</a>
+    </div>
+    <div class="container mt-3">
+        <!-- Edit Success Message -->
+<% if (typeof editMessage !== 'undefined') { %>
+<div class="alert alert-success"><%= editMessage %></div>
+<% } %>
+            <!--Delete Success message -->
+<% if (typeof deleteMessage !== 'undefined') { %>
+    <div class="alert alert-success"><%= deleteMessage %></div>
+    <% } %>
+        <div class="row">
+            <script></script>
+            <% taskList.map((task)=>{ %>
+                <div class="col-md-4 p-2">
+                    <div
+                      class="p-4 d-flex flex-column justify-content-between"
+                      style="border: 2px solid #e0e0e0; border-radius: 15px; background-color: white; box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.1);"
+                    >
+                      <div class="d-flex justify-content-between">
+                        <span class="badge bg-info text-white">Created: <%= task.date %></span>
+                        <span class="badge bg-<%= task.priority == 'High' ? 'danger' : task.priority == 'Medium' ? 'warning' : 'success' %>">
+                          <%= task.priority %> Priority
+                        </span>
+                      </div>
+                      <h4 class="text-dark fw-bold mt-3"><%= task.title %></h4>
+                      <p class="text-muted"><%= task.description %></p>
+                  
+                      <div class="d-flex justify-content-between">
+                        <a href="/task/edit-task/<%= task.id %>">
+                          <button class="btn btn-outline-primary">Edit</button>
+                        </a>
+                        <a onclick="return confirm('Do you want to delete?')" href="/task/delete-task/<%= task.id %>">
+                          <button class="btn btn-outline-danger">Delete</button>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  
+            <%})%>
+        </div>
+    </div>
+    </body>
+</html>

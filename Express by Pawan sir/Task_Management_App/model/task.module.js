@@ -1,4 +1,5 @@
 import pool from "../db/dbConfig.js";
+let insertedTaskId;
 
 export default class Task{
     constructor(id,title,description,status,date,priorityId){
@@ -8,6 +9,24 @@ export default class Task{
         this.status = status;
         this.date = date;
         this.priorityId = priorityId;
+    }
+
+     //For adding the user_id and role_Id
+     static assign(task){
+        return new Promise((resolve , reject)=>{
+            pool.getConnection((err , con)=>{
+                if(!err){
+                    let sql = "UPDATE task SET userId = ? where id = ?";
+                    con.query(sql , [task.userId , insertedTaskId] , (err , result)=>{
+                        con.release();
+                        err ? reject(err) : resolve(result);
+                    })
+                }else {
+                    console.log(err);
+                    
+                }
+            })
+        })
     }
     static delete(id){
         return new Promise((resolve,reject)=>{
@@ -40,10 +59,13 @@ export default class Task{
         return new Promise((resolve,reject)=>{
             pool.getConnection((err,con)=>{
                 if(!err){
-                     let sql = "insert into task(title,description,date,priorityId) values (?,?,?,?)";
-                     con.query(sql,[task.title,task.description,task.date,task.priorityId*1],(err,result)=>{
+                     let sql = "insert into task(title,description,date,priorityId,userId) values (?,?,?,?,?)";
+                     con.query(sql,[task.title,task.description,task.date,task.priorityId*1,task.userId*1],(err,result)=>{
                         con.release();
-                        err ? reject(err) : resolve(true);
+                        console.log(result);
+                        // insertedTaskId = result.insertId;
+                        
+                        err ? reject(err) : resolve(result);
                      })
                 }
                 else reject(err);
@@ -94,20 +116,5 @@ export default class Task{
             })
         })
     }
-    static pendingTask(){
-        return new Promise((resolve,reject)=>{
-            pool.getConnection((err,con)=>{
-                if(!err){
-                    let sql = "select * from task where status = 'Active'";
-                    con.query(sql,(err,result)=>{
-                            con.release();
-                            err ? reject(err) : resolve(result);
-                    })
-                }
-                else{
-                    reject(err);
-                }
-            })
-        })
-    }
+    
 }

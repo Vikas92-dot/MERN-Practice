@@ -1,6 +1,16 @@
 import { response } from "express";
 import Task from "../model/task.module.js";
 import TaskPriority from "../model/task_priority.model.js"
+import Role from "../model/role.model.js";
+
+export const assignTask = async (request,response,next)=>{
+    let {userId} = request.body;
+    await Task.assign({userId});
+    console.log("Successfully assigned..Task",);
+    
+    return response.redirect('/task/create-task')
+
+}
 
 export const DeleteTask = async (request,response,next)=>{
     try{
@@ -90,10 +100,11 @@ export const FetchTask =  (request,response)=>{
 export const CreateTaskPage = async (request,response,next)=>{
     try{
         let taskPriorities = await TaskPriority.findAll();
+        let allRoles = await Role.fetchRole();
         const successMessage = request.query.success;
         console.log(taskPriorities);
         
-        return response.render("create-task.ejs",{taskPriorities,successMessage});
+        return response.render("create-task.ejs",{taskPriorities,allRoles,successMessage});
     }
     catch(err){
         console.log(err);
@@ -103,13 +114,14 @@ export const CreateTaskPage = async (request,response,next)=>{
 }
 export const CreateTask = async (request,response,next)=>{
     try{
-        let {title,description,priorityId} = request.body;
+        let {title,description,priorityId,userId} = request.body;
         let status = "Active";
         let date = new Date();
         date = date.getDate() +"/"+(date.getMonth()+1)+"/"+date.getFullYear();
-        let isCreated = await Task.create({title,description,priorityId,status,date});
+        let isCreated = await Task.create({title,description,priorityId,status,date,userId});
+        
         if (isCreated) {
-            return response.redirect("/task/create-task?success=Task created successfully!");
+            return response.redirect(`/admin/userlist?userId=${userId}`);
         }
 
     }

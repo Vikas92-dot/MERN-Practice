@@ -47,6 +47,12 @@
               <i class="bi bi-plus-circle-dotted me-2"></i>Create Task
             </a>
           </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link text-light fw-semibold px-3 rounded hover-bg-light-warning" href="/admin/userlist">
+              <i class="bi bi-people"></i>Users List
+            </a>
+          </li> -->
+          <li class="nav-item">
           <li class="nav-item">
             <a class="nav-link text-light fw-semibold px-3 rounded hover-bg-light-info" href="#">
               <i class="bi bi-check-circle me-2"></i>Completed Task
@@ -58,9 +64,11 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-light fw-semibold px-3 rounded hover-bg-light-secondary" href="#">
-              <i class="bi bi-box-arrow-left"></i> Sign Out
-            </a>
+            <form action="/admin/sign-out" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-link text-light fw-semibold">
+                <i class="bi bi-box-arrow-left"></i> Sign Out
+              </button>
+            </form>            
           </li>
         </ul>
       </div>

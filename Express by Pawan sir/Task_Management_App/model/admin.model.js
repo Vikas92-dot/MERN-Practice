@@ -6,6 +6,7 @@ export default class Admin{
         this.email = email;
         this.password = password;
     }
+    
     authenticate(){
         return new Promise((resolve,reject)=>{
             pool.getConnection((err,con)=>{
@@ -21,4 +22,5 @@ export default class Admin{
             })
         })
     }
+
 }
