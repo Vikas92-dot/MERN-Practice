@@ -5,7 +5,7 @@ import { verify } from '../middleware/auth.js';
 const router = express.Router();
 
 router.get('/create-task',verify,CreateTaskPage);
-router.post('/create-task',verify,CreateTask)
+router.post('/create-task',verify,CreateTask);
 router.get('/all-task',verify,FetchTask);
 router.get('/load-task/:priorityId',verify,FetchTaskById)
 router.get('/edit-task/:id',verify,EditTaskPage);

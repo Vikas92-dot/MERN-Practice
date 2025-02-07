@@ -13,8 +13,8 @@ export default class User{
         return new Promise((resolve,reject)=>{
             pool.getConnection((err,con)=>{
                 if(!err){
-                    let sql = "select * from user where email = ? and password = ?";
-                    con.query(sql,[this.email,this.password],(err,result)=>{
+                    let sql = "select * from user where email = ?";
+                    con.query(sql,[this.email],(err,result)=>{
                         con.release();
                         console.log(result);
                         
@@ -61,7 +61,7 @@ export default class User{
                     let sql = "INSERT INTO user (name,email,password,role) VALUES (?,?,?,?)";
                     con.query(sql,[task.name,task.email,task.password,task.role],(err,result)=>{
                         con.release();
-                        err ? reject(err) : resolve(true);
+                        err ? reject(err) : resolve(result);
                     })
                 }
                 else reject(err);

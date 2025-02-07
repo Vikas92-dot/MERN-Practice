@@ -1,7 +1,8 @@
+import { validationResult } from "express-validator";
 import Role from "../model/role.model.js";
 import Task from "../model/task.module.js";
 import User from "../model/user.model.js";
-
+import bcrypt from 'bcryptjs';
 
 
 export const completeTask = async (request,response,next)=>{
@@ -48,19 +49,24 @@ export const userDashboard = (request,response,next)=>{
 
 export const signInUser = (request,response,next)=>{
     let {email,password} = request.body;
-    let user = new User(null, null, email, password, null);
+    let user = new User(null, null, email, null, null);
 
         user.authenticateUser().then(result=>{
             console.log(result);
             
             if(result.length != 0){
+                console.log(result[0]);
                 
-                return response.redirect(`/user/dashboard?userId=${result[0].id}`);
+                let hashPassword = result[0].password;  // Fetch the correct hashed password
+                let status = bcrypt.compareSync(password,hashPassword);
+                return status ? response.redirect(`/user/dashboard?userId=${result[0].id}`) : response.redirect('/user/sign-in'); 
             }
             else
                 return response.redirect("/user/sign-in");
             
         }).catch(err=>{ 
+            console.log(err);
+            
             return response.render('error.ejs');
         })
     }
@@ -81,17 +87,34 @@ export const assignTask = async (request,response,next)=>{
         response.render('error.ejs');}
 }
 
-export const signUpAction = async (request,response)=>{
-    try{
+export const signUpAction =  (request,response)=>{
+    
+        const errors = validationResult(request);//if this is empty means all validations are passed which we applied in route
+
+        if(errors.isEmpty()){
+
         let {name,email,password,role} = request.body;
-        let isCreated = User.create({name,email,password,role});
-        if(isCreated){
+        let saltKey = bcrypt.genSaltSync(10); //generate saltkey with 10 rounds
+        password = bcrypt.hashSync(password,saltKey); //stored hashed password in password
+        
+        User.create({name,email,password,role})
+        .then(result=>{
+            console.log(result);
+            
             console.log("sign up successfully..");
             
             response.render('user-sign-in.ejs');
-        }
+        }).catch(err=>{
+            console.log(err);
+            
+            return response.render("error.ejs");
+        })
+        
     }
-    catch(err){
-        return response.render("error.ejs");
+    else{
+        
+        console.log({error: "Bad request",errors: errors.array()});
+        
+        return response.render('error.ejs');
     }
 }
